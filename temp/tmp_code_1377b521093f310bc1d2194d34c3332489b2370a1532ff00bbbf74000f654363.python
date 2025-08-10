@@ -1,0 +1,33 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def plot_survival(filename="titanic.csv"):
+    try:
+        # Load the dataset
+        df = pd.read_csv(filename)
+        
+        # Calculate survival counts
+        survived_count = df['Survived'].value_counts()[1]
+        dead_count = df['Survived'].value_counts()[0]
+
+        # Create a bar chart
+        plt.figure(figsize=(8, 6))  # Adjust figure size if needed
+        plt.bar(['Survived', 'Died'], [survived_count, dead_count], color=['green', 'red'])
+        plt.xlabel("Survival Status")
+        plt.ylabel("Number of Passengers")
+        plt.title("Titanic Survival Count")
+        plt.xticks(rotation=0) #Rotate xticks for better view
+        plt.tight_layout()  # Improves layout for better presentation
+        plt.savefig("output.png")
+        plt.close() #Close the plot, good practice.
+
+        print("Survival analysis graph saved as output.png")
+
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+    except KeyError as e:
+        print(f"Error: Column '{e.args[0]}' not found in the CSV file.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+plot_survival()

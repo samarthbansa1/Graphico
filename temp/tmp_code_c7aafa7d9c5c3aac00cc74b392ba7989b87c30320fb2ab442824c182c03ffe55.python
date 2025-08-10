@@ -1,0 +1,42 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def create_index_histogram(filepath):
+    try:
+        # Load the CSV file into a pandas DataFrame.
+        df = pd.read_csv(filepath)
+
+        # Check if the 'Index' column exists. If not, provide feedback.
+        if 'Index' not in df.columns:
+            print("Error: 'Index' column not found in the CSV.")
+            print("Available columns:", df.columns)
+            return
+
+        # Convert 'Index' to numeric if possible. Handle potential errors gracefully.
+        try:
+            df['Index'] = pd.to_numeric(df['Index'])
+        except (ValueError, TypeError):
+            print("Error: Could not convert 'Index' column to numeric. Skipping histogram creation.")
+            return  # Exit early if conversion fails
+
+        # Create the histogram
+        plt.figure(figsize=(10, 6))
+        plt.hist(df['Index'], bins=20, edgecolor='black')  # Adjust bins as needed
+        plt.xlabel('Index')
+        plt.ylabel('Frequency')
+        plt.title('Histogram of Index Values')
+        plt.grid(True)
+
+
+        plt.savefig('output.png')
+        plt.close()
+        print("Histogram saved as output.png")
+
+    except FileNotFoundError:
+        print(f"Error: File '{filepath}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+# Replace 'customers-100.csv' with the actual filename.
+create_index_histogram('data.csv')

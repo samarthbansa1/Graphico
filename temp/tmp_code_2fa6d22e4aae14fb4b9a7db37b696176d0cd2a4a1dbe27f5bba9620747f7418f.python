@@ -1,0 +1,32 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def create_embarked_pie_chart(filename="titanic.csv"):
+    try:
+        # Load the dataset
+        df = pd.read_csv(filename)
+
+        # Check for missing values and handle them (important)
+        df = df.dropna(subset=['Embarked'])
+        
+        # Count passengers per Embarked location
+        embarked_counts = df['Embarked'].value_counts()
+
+        # Create the pie chart
+        plt.figure(figsize=(8, 8))  # Adjust figure size for better visualization
+        plt.pie(embarked_counts, labels=embarked_counts.index, autopct='%1.1f%%', startangle=140)
+        plt.title('Passenger Distribution by Embarked Port')
+        plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        # Save the figure
+        plt.savefig('output.png')
+        plt.close() # Close the figure to prevent showing it in the notebook
+
+        print("Pie chart created and saved as output.png successfully.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+create_embarked_pie_chart()

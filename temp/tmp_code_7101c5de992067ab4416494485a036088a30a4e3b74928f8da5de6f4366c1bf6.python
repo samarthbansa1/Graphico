@@ -1,0 +1,38 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def plot_survival_by_sex(filename):
+    try:
+        # Read the CSV file into a pandas DataFrame.  Error handling added.
+        df = pd.read_csv(filename)
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+        return
+    except pd.errors.EmptyDataError:
+        print(f"Error: File '{filename}' is empty.")
+        return
+    except pd.errors.ParserError:
+        print(f"Error parsing file '{filename}'.  Check file format.")
+        return
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return
+
+    # Calculate the counts using a more robust groupby
+    survival_counts = df.groupby(['Sex', 'Survived'])['PassengerId'].count().unstack()
+
+    # Create the grouped bar chart
+    fig, ax = plt.subplots(figsize=(8, 6))
+    survival_counts.plot(kind='bar', ax=ax, width=0.8)
+    ax.set_xlabel('Sex')
+    ax.set_ylabel('Number of Passengers')
+    ax.set_title('Survival Counts by Sex')
+    ax.legend(['Not Survived', 'Survived'])
+    ax.set_xticklabels(['Female', 'Male'])  # Explicitly set x-axis labels
+
+    plt.tight_layout()  # Prevents labels from overlapping
+    plt.savefig('output.png')
+    plt.close()  # Close the plot to avoid multiple plots showing in the notebook
+    print("Grouped bar chart created successfully and saved as output.png")
+    
+plot_survival_by_sex('titanic.csv')

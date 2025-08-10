@@ -1,0 +1,30 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def create_swarm_plot(file_path):
+    try:
+        # Load the dataset
+        df = pd.read_csv(file_path)
+
+        # Create the swarm plot
+        plt.figure(figsize=(10, 6))  # Adjust figure size as needed
+        sns.swarmplot(x='Pclass', y='Fare', hue='Survived', data=df)
+        plt.xlabel('Pclass')
+        plt.ylabel('Fare')
+        plt.title('Fare by Pclass with Survival Status')
+        plt.legend(title='Survived')  # Add a legend title
+        plt.tight_layout()  # Adjust layout for better spacing
+        plt.savefig('output.png')
+        plt.close()
+        print("Swarm plot created successfully and saved as output.png")
+
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+    except pd.errors.EmptyDataError:
+        print(f"Error: The input file is empty.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+create_swarm_plot('titanic.csv')

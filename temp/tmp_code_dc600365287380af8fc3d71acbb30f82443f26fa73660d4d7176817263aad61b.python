@@ -1,0 +1,39 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def analyze_customer_scatter(filepath):
+    try:
+        # Load the CSV file into a pandas DataFrame.
+        df = pd.read_csv(filepath)
+
+        # Check for necessary columns.  If not found, provide feedback.
+        required_cols = ['Index', 'CustomerID', 'Country']
+        missing_cols = [col for col in required_cols if col not in df.columns]
+        if missing_cols:
+            print(f"Error: The following columns are missing: {missing_cols}")
+            print("Available columns:", df.columns)
+            return
+
+        # Create the scatter plot. Handle potential errors gracefully.
+        plt.figure(figsize=(10, 6))  # Adjust figure size for better display
+        plt.scatter(df['Index'], df['CustomerID'], c=df['Country'], cmap='viridis', s=50) # s=50 to adjust point size
+
+
+        plt.xlabel('Index')
+        plt.ylabel('CustomerID')
+        plt.title('Customer Index vs. CustomerID colored by Country')
+        plt.colorbar(label='Country')  # Add a colorbar for clarity
+        plt.grid(True) #Add grid
+
+        plt.savefig('output.png')
+        plt.close()  # Close the plot to prevent it from displaying
+        print("Scatter plot saved as output.png")
+
+    except FileNotFoundError:
+        print(f"Error: File '{filepath}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+# Replace 'customers-100.csv' with the actual filename.
+analyze_customer_scatter('data.csv')

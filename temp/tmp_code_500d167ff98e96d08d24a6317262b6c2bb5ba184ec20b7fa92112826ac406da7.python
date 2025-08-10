@@ -1,0 +1,46 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+def create_subscription_pie_chart(file_path):
+    try:
+        # Check if file exists.  If not, print an error and return.
+        if not os.path.exists(file_path):
+            print(f"Error: File '{file_path}' not found.")
+            return
+            
+        df = pd.read_csv(file_path)
+
+        #Check if 'Subscription Date' column exists.
+        if 'Subscription Date' not in df.columns:
+            print("Error: 'Subscription Date' column not found.  Unable to proceed.")
+            return
+
+        #Robust date handling
+        try:
+            df['Subscription Date'] = pd.to_datetime(df['Subscription Date'])
+        except ValueError as e:
+            print(f"Error converting 'Subscription Date' to datetime: {e}.  Check the date format.")
+            return
+
+        df['Subscription Year'] = df['Subscription Date'].dt.year
+
+        year_counts = df['Subscription Year'].value_counts()
+
+        #Create the pie chart
+        plt.figure(figsize=(8, 8))
+        plt.pie(year_counts, labels=year_counts.index, autopct='%1.1f%%', startangle=140)
+        plt.title('Customer Subscriptions by Year')
+        plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        plt.savefig('output.png')
+        plt.close() #close the figure to prevent displaying it
+        print("Pie chart saved as output.png successfully.")
+
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+# Replace 'customers-100.csv' with the actual file path
+create_subscription_pie_chart('customers-100.csv')

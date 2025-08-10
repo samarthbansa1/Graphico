@@ -1,0 +1,31 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def create_bar_chart(file_path):
+    try:
+        # Load the dataset
+        df = pd.read_csv(file_path)
+
+        # Group by 'Sex' and count passengers
+        sex_counts = df['Sex'].value_counts()
+
+        # Create the bar chart
+        plt.figure(figsize=(8, 6))  # Adjust figure size as needed
+        sex_counts.plot(kind='bar')
+        plt.xlabel('Sex')
+        plt.ylabel('Passenger Count')
+        plt.title('Passenger Counts by Sex')
+        plt.xticks(rotation=0)  # Rotate x-axis labels for better readability
+        plt.tight_layout()  # Adjust layout to prevent labels from overlapping
+        plt.savefig('output.png')
+        plt.close()  # Close the plot to prevent it from showing
+        print("Bar chart created successfully and saved as output.png")
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+    except pd.errors.EmptyDataError:
+        print(f"Error: The input file is empty.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+create_bar_chart('titanic.csv')

@@ -1,0 +1,30 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+def create_boxplot(filepath='titanic.csv'):
+    try:
+        # Load the data
+        df = pd.read_csv(filepath)
+        
+        # Handle missing values (crucial for boxplots)
+        df = df.dropna(subset=['Age', 'Pclass'])
+
+        # Create the boxplot
+        plt.figure(figsize=(10, 6))  # Adjust figure size if needed
+        sns.boxplot(x='Pclass', y='Age', data=df)
+        plt.xlabel('Passenger Class (Pclass)')
+        plt.ylabel('Age')
+        plt.title('Age Distribution by Passenger Class')
+        plt.xticks(rotation=0) #rotate x-axis labels for better readability
+
+        # Save the plot
+        plt.savefig('output.png')
+        plt.close()  # Important: close the plot to prevent it from blocking further code
+        print("Boxplot created and saved as output.png")
+    except FileNotFoundError:
+        print(f"Error: File '{filepath}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+create_boxplot()

@@ -1,0 +1,42 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+def create_violin_plot(filename="titanic.csv"):
+    try:
+        # Load the data.  Handles potential errors if the file is not found.
+        df = pd.read_csv(filename)
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+        return
+    except pd.errors.EmptyDataError:
+        print(f"Error: File '{filename}' is empty.")
+        return
+    except Exception as e:
+        print(f"An error occurred while loading the data: {e}")
+        return
+    
+    #Ensure the 'Survived' and 'Fare' columns are numeric.
+    try:
+        df['Survived'] = pd.to_numeric(df['Survived'])
+        df['Fare'] = pd.to_numeric(df['Fare'], errors='coerce') # Handles non-numeric values in Fare
+
+        #Create the violin plot. Handle potential errors during plotting.
+        plt.figure(figsize=(8, 6))
+        sns.violinplot(x='Survived', y='Fare', data=df)
+        plt.xlabel('Survived')
+        plt.ylabel('Fare')
+        plt.title('Violin Plot of Fare by Survived')
+        plt.tight_layout()  # Adjust layout to prevent labels from overlapping.
+        plt.savefig('output.png')
+        plt.close()  # Close the plot to avoid displaying it.
+        print("Violin plot created successfully and saved as output.png")
+    except KeyError as e:
+        print(f"Error: Column '{e}' not found in the dataset.")
+        return
+    except Exception as e:
+        print(f"An error occurred while creating the plot: {e}")
+        return
+
+
+create_violin_plot()

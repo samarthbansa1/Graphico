@@ -1,0 +1,35 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def analyze_country_customers(filepath):
+    try:
+        # Load the CSV file into a pandas DataFrame.
+        df = pd.read_csv(filepath)
+        
+        # Check if 'Country' column exists. If not, print available columns and exit.
+        if 'Country' not in df.columns:
+            print("Error: 'Country' column not found in the CSV.")
+            print("Available columns:", df.columns)
+            return
+        
+        # Count occurrences of each country
+        country_counts = df['Country'].value_counts()
+        
+        # Create the pie chart
+        plt.figure(figsize=(8, 8))  # Adjust figure size for better display
+        plt.pie(country_counts, labels=country_counts.index, autopct='%1.1f%%', startangle=140)
+        plt.title('Country Distribution of Customers')
+        plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        plt.savefig('output.png')
+        plt.close()  # Close the plot to prevent it from displaying
+        print("Pie chart saved as output.png")
+        
+    except FileNotFoundError:
+        print(f"Error: File '{filepath}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+# Replace 'customers-100.csv' with the actual filename.
+analyze_country_customers('data.csv') 

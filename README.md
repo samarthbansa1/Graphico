@@ -61,6 +61,8 @@ After uploading your CSV, you can type commands like:
 if customers-100.csv is your csv file name - then use commands like 
 Bar of Country vs Count of Customers from customers-100.csv
 
+```
+
 ## 📂 Project Structure
 Graphico/
 │── Analyzer Gpt/             # Main application folder

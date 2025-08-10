@@ -61,7 +61,7 @@ After uploading your CSV, you can type commands like:
 if customers-100.csv is your csv file name - then use commands like 
 Bar of Country vs Count of Customers from customers-100.csv
 
-```
+
 
 ## 📂 Project Structure
 Graphico/
@@ -85,3 +85,11 @@ flowchart LR
     C --> D[⚙️ Code Executor Agent (Docker)]
     D -->|Success| E[📊 Visualization Output]
     D -->|Error| B
+
+flowchart LR
+    A[User Uploads CSV + Command] --> B[🧠 Data Analyst Agent]
+    B --> C[Generate Python Visualization Code]
+    C --> D[⚙️ Code Executor Agent (Docker)]
+    D -->|Success| E[📊 Visualization Output]
+    D -->|Error| B
+

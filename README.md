@@ -40,7 +40,7 @@ Graphico uses **Microsoft AutoGen** to run a **dual-agent system**:
 ## 🛠 Installation
 ```bash
 
-### **1. Clone the repository**
+1. Clone the repository**
 git clone https://github.com/<your-username>/Graphico.git
 cd Graphico
 2. Install dependencies
